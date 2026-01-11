@@ -6,25 +6,22 @@ const kingstar = new Client.Client({
   checkUpdate: false,
 });
 
-kingstar.on("messageCreate", async (message) => {
-  console.log(message);
-  const { guildId, author, type } = message;
+kingstar.on("guildMemberAdd", async (member) => {
+  const { guild, user } = member;
 
-  if (type !== "GUILD_MEMBER_JOIN") return;
-
-  const guild = kingstar.guilds.cache.get(guildId);
   let content;
 
-  if (kingstar.user.id === author.id) {
+  if (kingstar.user.id === user.id) {
     content = `✅ You just joined ${
       guild ? guild.name : "Unknown Server"
-    }(${guildId}) server!`;
+    } server!`;
   } else {
     content = `
-🆕 New user joined ${guild ? guild.name : "Unknown Server"}(${guildId}) server!
+🆕 New user joined <b>${guild ? guild.name : "Unknown Server"}</b> server!
 
-👤 User: ${author.globalName}(@${author.tag})
-📅 Joined at: ${new Date().toLocaleString()}
+<b>👤 UserName:</b> @${user.username}
+<b>🆔 ID:</b> <code>${user.id}</code>
+<b>📅 Joined at:</b> ${new Date().toLocaleString()}
 `;
   }
   await send(content);

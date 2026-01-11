@@ -9,6 +9,7 @@ const send = async (content) => {
       body: JSON.stringify({
         chat_id: process.env.RECEIVER_CHAT_ID,
         text: content,
+        parse_mode: "HTML"
       })
     });
   const data = await response.json();
@@ -16,7 +17,7 @@ const send = async (content) => {
     console.error("Error sending message:", data.description || error.message);
     return;
   }
-  console.log("Update sent to:", data.result.chat);
+  console.log("Update sent to:", data.result.chat.first_name);
   return true;
 };
 
