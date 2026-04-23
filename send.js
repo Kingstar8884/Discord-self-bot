@@ -1,13 +1,14 @@
 require("dotenv").config();
 
-const send = async (content) => {
+const send = async (content, topicId) => {
     const response = await fetch(`https://api.telegram.org/bot${process.env.TELEGRAM_BOT_TOKEN}/sendMessage`, {
        method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        chat_id: process.env.RECEIVER_CHAT_ID,
+        chat_id: process.env.GROUP_ID,
+        message_thread_id: topicId || undefined,
         text: content,
         parse_mode: "HTML"
       })
@@ -17,7 +18,7 @@ const send = async (content) => {
     console.error("Error sending message:", data.description || error.message);
     return;
   }
-  console.log("Update sent to:", data.result.chat.first_name);
+  console.log("✅ Update sent to group successfully.");
   return true;
 };
 
